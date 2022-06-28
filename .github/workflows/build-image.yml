@@ -1,0 +1,58 @@
+name: Build and publish manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Image version"
+        required: true
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Build image
+        run: docker build -t secrets .
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Log in to DO Container Registry
+        run: doctl registry login --expiry-seconds 600
+
+      - name: Tag image
+        run: docker tag ${{ secrets.APP_NAME }}:latest ${{ secrets.REGISTRY_URI }}/${{ secrets.APP_NAME }}
+
+      - name: Push image to DO Container Registry
+        run: docker push ${{ secrets.REGISTRY_URI }}/${{ secrets.APP_NAME }}:latest
+
+      - name: Replace Environment Variables
+        uses: danielr1996/envsubst-action@1.0.0
+        env:
+          SECRET: ${{ secrets.SECRET }}
+          APP_NAME: ${{ secrets.APP_NAME }}
+          REGISTRY_URI: ${{ secrets.REGISTRY_URI }}
+        with:
+          input: ./deploy/deployment.yml
+          output: deploy.yml
+
+      - name: ls -la
+        run: ls -la && cat ./deploy.yml
+
+      - name: Save DigitalOcean kubeconfig
+        run: doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
+        env:
+          CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+
+      - name: Deploy kubernetes
+        uses: actions-hub/kubectl@master
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        with:
+          args: apply -f ./deploy.yml
+
