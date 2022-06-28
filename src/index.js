@@ -10,7 +10,7 @@ app.get('/', (req,res) => {
 });
 
 app.get('/api/v1/names', (req,res) => {
-  res.json({names: ['GiR','GiRLaZo','Steve'], secretOrNot})
+  res.json({names: ['GiR','GiRLaZo','Steve'], secretOrNot});
 });
 
 app.listen(port, () => {
