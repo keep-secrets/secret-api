@@ -26,10 +26,10 @@ jobs:
         run: doctl registry login --expiry-seconds 600
 
       - name: Tag image
-        run: docker tag ${{ secrets.APP_NAME }}:latest ${{ secrets.REGISTRY_URI }}/${{ secrets.APP_NAME }}
+        run: docker tag ${{ github.event.repository.name }}:latest ${{ secrets.REGISTRY_URI }}/${{ github.event.repository.name }}
 
       - name: Push image to DO Container Registry
-        run: docker push ${{ secrets.REGISTRY_URI }}/${{ secrets.APP_NAME }}:latest
+        run: docker push ${{ secrets.REGISTRY_URI }}/${{ github.event.repository.name }}:latest
 
       - name: Replace Environment Variables
         uses: danielr1996/envsubst-action@1.0.0
