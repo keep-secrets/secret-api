@@ -35,7 +35,7 @@ jobs:
         uses: danielr1996/envsubst-action@1.0.0
         env:
           SECRET: ${{ secrets.SECRET }}
-          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_NAME: ${{ github.event.repository.name }}
           REGISTRY_URI: ${{ secrets.REGISTRY_URI }}
         with:
           input: ./deploy/deployment.yml
