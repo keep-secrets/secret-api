@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: secrets-api
+  name: $APP_NAME-api
   labels:
-    app: secrets-api
+    app: $APP_NAME-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: secrets-api
+      app: $APP_NAME-api
   template:
     metadata:
       labels:
-        app: secrets-api
+        app: $APP_NAME-api
     spec:
       containers:
-        - name: secrets-api
+        - name: $APP_NAME-api
           image: $REGISTRY_URI/$APP_NAME:latest
           env:
             - name: SECRET
@@ -26,10 +26,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: secret-lb
+  name: $APP_NAME-lb
 spec:
   selector:
-    app: secrets-api
+    app: $APP_NAME-api
   type: LoadBalancer
   ports:
     - port: 80
