@@ -40,10 +40,7 @@ jobs:
         with:
           input: ./deploy/deployment.yml
           output: deploy.yml
-
-      - name: ls -la
-        run: ls -la && cat ./deploy.yml
-
+ 
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
         env:
