@@ -22,6 +22,7 @@ spec:
               value: "$SECRET"
           ports:
             - containerPort: 3000
+          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
@@ -30,7 +31,7 @@ metadata:
 spec:
   selector:
     app: $APP_NAME
-  type: LoadBalancer
+  type: CluesterIP
   ports:
     - port: 80
       targetPort: 3000
