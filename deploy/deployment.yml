@@ -22,15 +22,16 @@ spec:
               value: "$SECRET"
           ports:
             - containerPort: 3000
+          imagePullPolicy: Always
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: $APP_NAME-lb
+  name: $APP_NAME-svc
 spec:
   selector:
     app: $APP_NAME
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 80
       targetPort: 3000
