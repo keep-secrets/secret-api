@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+  api:
+    build: .
+    depends_on:
+      - mongo
+    ports:
+      - 3000:3000
+    environment:
+      SECRET: patata
+    volumes:
+      - ./src:/usr/src/app
+    command: npm run dev
+    networks:
+      - keepsecrets
+  mongo:
+    image: mongo
+    volumes:
+      - ./data/mongo:/data/db
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    networks:
+      - keepsecrets
+networks:
+  keepsecrets:
+    name: keepsecrets
+    external: true
