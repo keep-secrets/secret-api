@@ -1,24 +1,33 @@
 const awilix = require('awilix');
 
+const MUUID = require('uuid-mongodb');
+const MongoSecretRepository = require('./infrastructure/persistance/mongo/mongo-secret-repository');
+const secretDocumentParser = require('./infrastructure/persistance/mongo/secret-document-parser');
+const mongoDbHandler = require('./infrastructure/persistance/mongo/db-handler')
 const crypto = require('crypto');
 const {v4: uuidv4} = require('uuid');
 const SaveSecret = require('./application/save_secret');
 const idGenerator = require('./domain/services/id-generator');
 const tokenGenerator = require('./domain/services/token-generator');
 const Cipher = require('./domain/services/cipher');
+const findSecret = require('./application/find_secret');
 
 const container = awilix.createContainer({
   injectionMode: awilix.InjectionMode.PROXY,
 })
 
 container.register({
+  muid: awilix.asValue(MUUID),
+  secretRepository: awilix.asClass(MongoSecretRepository),
+  secretDocumentParser: awilix.asFunction(secretDocumentParser),
+  mongoDbHandler: awilix.asFunction(mongoDbHandler),
   crypto: awilix.asValue(crypto),
   uuidv4: awilix.asValue(uuidv4),
   saveSecret: awilix.asClass(SaveSecret),
   idGenerator: awilix.asFunction(idGenerator),
   tokenGenerator: awilix.asFunction(tokenGenerator),
   cipher: awilix.asClass(Cipher),
-  secretRepository: awilix.asValue({findById: () => false, save: () => true})
+  findSecret: awilix.asClass(findSecret),
 });
 
 module.exports = container;

@@ -10,7 +10,6 @@ class SaveSecret {
 
   async execute({payload, expireAt}) {
     const {id, token} = this._generateIdAndToken()
-
     const getSecret = await this.secretRepository.findById(id);
     this._assertSecretExists(getSecret);
 

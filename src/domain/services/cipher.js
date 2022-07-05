@@ -4,7 +4,6 @@ class Cipher {
   }
 
   encrypt(text) {
-    console.log(text)
     const secretKey = this.crypto.randomBytes(32);
     const iv = this.crypto.randomBytes(16);
     const cipher = this.crypto.createCipheriv('aes-256-ctr', secretKey, iv)
@@ -15,6 +14,16 @@ class Cipher {
       secret: encrypted.toString('hex'),
       secretKey: secretKey.toString('hex'),
     }
+  }
+
+  decrypt(hash) {
+    const secretKey = Buffer.from(hash.secretKey, 'hex');
+    const iv = Buffer.from(hash.iv, 'hex');
+
+    const decipher = this.crypto.createCipheriv('aes-256-ctr', secretKey, iv)
+    const decrypted = Buffer.concat([decipher.update(Buffer.from(hash.content,'hex')), decipher.final()]);
+
+    return decrypted.toString();
   }
 
 }
