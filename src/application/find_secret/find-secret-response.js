@@ -1,6 +1,6 @@
 class FindSecretResponse{
-  constructor({revealSecret}) {
-    this.revealSecret = revealSecret;
+  constructor({payload}) {
+    this.payload = payload;
   }
 }
 

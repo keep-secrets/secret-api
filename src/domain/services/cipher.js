@@ -1,3 +1,5 @@
+const FailedDecryptError = require('../errors/failed-decrypt-error');
+
 class Cipher {
   constructor({ crypto }) {
     this.crypto = crypto;
@@ -17,16 +19,19 @@ class Cipher {
   }
 
   decrypt(hash) {
-    const secretKey = Buffer.from(hash.secretKey, 'hex');
-    const iv = Buffer.from(hash.iv, 'hex');
+    try {
+      const secretKey = Buffer.from(hash.secretKey, 'hex');
+      const iv = Buffer.from(hash.iv, 'hex');
 
-    const decipher = this.crypto.createCipheriv('aes-256-ctr', secretKey, iv)
-    const decrypted = Buffer.concat([decipher.update(Buffer.from(hash.content,'hex')), decipher.final()]);
+      const decipher = this.crypto.createCipheriv('aes-256-ctr', secretKey, iv)
+      const decrypted = Buffer.concat([decipher.update(Buffer.from(hash.content,'hex')), decipher.final()]);
 
-    return decrypted.toString();
+      return decrypted.toString();
+    } catch (err) {
+      throw new FailedDecryptError('Decrypt failed');
+    }
   }
 
 }
-
 
 module.exports = Cipher

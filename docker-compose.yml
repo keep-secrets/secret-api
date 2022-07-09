@@ -8,7 +8,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      SECRET: patata
+      JWT_KEY: 9178c50c378bc98ac3a0083d6fe36e9fdc80d9e25dfac530
     volumes:
       - ./src:/usr/src/app
     command: npm run dev

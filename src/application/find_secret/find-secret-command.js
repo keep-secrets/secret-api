@@ -1,8 +1,8 @@
 class FindSecretCommand {
-  constructor({id, secretKey, token}) {
+  constructor({id, secretKey, organisation}) {
     this.id = id;
     this.secretKey = secretKey;
-    this.token = token;
+    this.organisation = organisation;
   }
 }
 

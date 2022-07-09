@@ -1,14 +1,21 @@
 const InvalidSecretError = require('./errors/invalid-secret-error');
+const InvalidOrganisationError = require('./errors/invalid-organisation-error');
 
 class Secret {
-  constructor({id, secret, token, iv, expireAt, createdAt, updatedAt}) {
+  constructor({id, secret, organisation, iv, expireAt, createdAt, updatedAt}) {
     this._createdAt = createdAt;
     this._id = id;
     this._secret = secret;
-    this._token = token;
+    this._organisation = organisation;
     this._iv = iv;
     this._expireAt = expireAt;
     this._updatedAt = updatedAt;
+  }
+
+  assertOrganization(organisationToCompare){
+    if(this.organisation !== organisationToCompare) {
+      throw new InvalidOrganisationError('Your organisation cannot see this secret');
+    }
   }
 
   get id() {
@@ -34,16 +41,16 @@ class Secret {
     this._secret = value;
   }
 
-  get token() {
-    return this._token;
+  get organisation() {
+    return this._organisation;
   }
 
-  set token(value) {
+  set organisation(value) {
     if(!value) {
-      throw new InvalidSecretError('Field token in Secret cannot be empty');
+      throw new InvalidSecretError('Field organisation in Secret cannot be empty');
     }
 
-    this._token = value;
+    this._organisation = value;
   }
 
   get iv() {

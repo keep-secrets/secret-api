@@ -37,6 +37,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           APP_NAME: ${{ github.event.repository.name }}
           REGISTRY_URI: ${{ secrets.REGISTRY_URI }}
+          JWT_KEY: ${{ secrets.JWT_KEY }}
         with:
           input: ./deploy/deployment.yml
           output: deploy.yml

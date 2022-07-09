@@ -10,6 +10,9 @@ const run = {
     mongoConnectionUri,
     mongoTimeout,
     dbName: 'secrets'
+  },
+  keepsecrets:{
+    signature: process.env.JWT_KEY || 'MySuperSecret',
   }
 }
 
@@ -21,6 +24,9 @@ const test = {
     mongoConnectionUri: null,
     mongoTimeout: 1,
     dbName: 'NOT EXISTS'
+  },
+  keepsecrets:{
+    signature: process.env.JWT_KEY || 'MySuperSecret',
   }
 }
 
