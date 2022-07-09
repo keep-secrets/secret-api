@@ -1,3 +1,6 @@
+const NotFoundSecretError = require('../../domain/secret/errors/not-found-secret-error');
+const FindSecretReponse = require('./find-secret-response');
+
 class FindSecret {
   constructor({secretRepository, cipher}) {
     this.secretRepository = secretRepository;
@@ -10,15 +13,14 @@ class FindSecret {
     this._checkToken({token, secret: findSecret});
 
     const revealSecret = this._decrypt({secret: findSecret, secretKey});
-    // ToDo: Implement delete.
-    // this.secretRepository.delete(id);
+    await this.secretRepository.delete(id);
 
-    return {revealSecret}
+    return new FindSecretReponse({revealSecret});
   }
 
   _assertSecretExists({secret}){
     if(!secret){
-      throw new Error('secret not found')
+      throw new NotFoundSecretError('Secret not found');
     }
   }
 
