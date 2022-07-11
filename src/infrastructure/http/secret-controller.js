@@ -43,7 +43,7 @@ router.post('/',
   } catch (err){
     console.log(err)
     if(err instanceof AlreadyExistsSecretError){
-      res.status(404).json({message: err.message})
+      res.status(409).json({message: err.message})
     }
     res.status(500).json({message: 'Something wrong'});
   }
