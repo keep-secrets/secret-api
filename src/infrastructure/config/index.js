@@ -1,6 +1,6 @@
 const env = process.env.NODE_ENV;
 const mongoTimeout = 5000;
-let mongoConnectionUri = 'mongodb://admin:admin@mongo:27017/';
+let mongoConnectionUri = process.env.MONGO_URI || 'mongodb://admin:admin@mongo:27017/';
 
 const run = {
   server: {
@@ -10,7 +10,7 @@ const run = {
     mongoConnectionUri,
     mongoTimeout,
     dbName: 'secrets'
-  }
+  },
 }
 
 const test = {
@@ -21,7 +21,7 @@ const test = {
     mongoConnectionUri: null,
     mongoTimeout: 1,
     dbName: 'NOT EXISTS'
-  }
+  },
 }
 
 const config = {

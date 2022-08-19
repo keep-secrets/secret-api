@@ -18,8 +18,10 @@ spec:
         - name: $APP_NAME
           image: $REGISTRY_URI/$APP_NAME:latest
           env:
-            - name: SECRET
-              value: "$SECRET"
+            - name: MONGO_URI
+              value: "$MONGO_URI"
+            - name: JWT_KEY
+              value: "$JWT_KEY"
           ports:
             - containerPort: 3000
           imagePullPolicy: Always

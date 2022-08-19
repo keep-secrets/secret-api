@@ -1,15 +1,18 @@
 const Secret = require('../../domain/secret/Secret');
+const AlreadyExistsSecretError = require('../../domain/secret/errors/already-exists-secret-error');
+const SaveSecretResponse = require('./save-secret-response');
 
 class SaveSecret {
-  constructor({idGenerator, secretRepository, tokenGenerator, cipher}) {
+  constructor({idGenerator, secretRepository, cipher}) {
     this.idGenerator = idGenerator;
-    this.tokenGenerator = tokenGenerator;
     this.secretRepository = secretRepository;
     this.cipher = cipher;
   }
 
-  async execute({payload, expireAt}) {
-    const {id, token} = this._generateIdAndToken()
+  async execute({payload, expireAt, organisation}) {
+    this._assertOrganization(organisation);
+
+    const id = this.idGenerator.generate();
     const getSecret = await this.secretRepository.findById(id);
     this._assertSecretExists(getSecret);
 
@@ -21,7 +24,7 @@ class SaveSecret {
     const secretDomain = new Secret({
       id,
       secret,
-      token,
+      organisation,
       iv,
       expireAt: expirationDate,
       createdAt: currentDate,
@@ -29,19 +32,18 @@ class SaveSecret {
     })
 
     await this.secretRepository.save(secretDomain);
-    return {id, secretKey, token}
+    return new SaveSecretResponse({id, secretKey});
   }
 
-  _generateIdAndToken(){
-    const id = this.idGenerator.generate();
-    const token = this.tokenGenerator.generate();
-
-    return {id, token}
+  _assertOrganization(organization){
+    if(!organization) {
+      throw new Error('Organization must be provided');
+    }
   }
 
   _assertSecretExists(secret){
     if(secret) {
-      throw new Error('Secret id already exists'); // ToDo: create custom error
+      throw new AlreadyExistsSecretError('Secret id already exists');
     }
   }
 

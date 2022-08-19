@@ -1,4 +1,3 @@
-const MUUID = require('uuid-mongodb');
 const SECRETS = 'secrets'
 
 class MongoSecretRepository {
@@ -25,6 +24,15 @@ class MongoSecretRepository {
       await db.collection(SECRETS).insertOne(secretDomain);
 
       return Promise.resolve();
+    } catch (err) {
+      throw new Error(err)
+    }
+  }
+
+  async delete(id){
+    const db = await this.mongoDbHandler.getInstance();
+    try{
+      await db.collection(SECRETS).deleteOne({_id: this.muid.from(id)});
     } catch (err) {
       throw new Error(err)
     }

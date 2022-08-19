@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+
 const isTokenPresent = (req,res,next) => {
   const { headers } = req;
 
@@ -11,7 +13,9 @@ const isTokenPresent = (req,res,next) => {
     return res.status(400).json({message: 'Bearer token not present'});
   }
 
-  req.token = token;
+  const tokenDecoded = jwt.decode(token);
+
+  req.token = tokenDecoded;
   next();
 }
 

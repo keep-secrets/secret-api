@@ -34,13 +34,14 @@ jobs:
       - name: Replace Environment Variables
         uses: danielr1996/envsubst-action@1.0.0
         env:
-          SECRET: ${{ secrets.SECRET }}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
           APP_NAME: ${{ github.event.repository.name }}
           REGISTRY_URI: ${{ secrets.REGISTRY_URI }}
+          JWT_KEY: ${{ secrets.JWT_KEY }}
         with:
           input: ./deploy/deployment.yml
           output: deploy.yml
- 
+
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
         env:
