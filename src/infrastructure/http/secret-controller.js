@@ -41,9 +41,9 @@ router.post('/',
     res.status(200).json(response);
   } catch (err){
     if(err instanceof AlreadyExistsSecretError){
-      res.status(409).json({message: err.message})
+      return res.status(409).json({message: err.message})
     }
-    res.status(500).json({message: 'Something wrong'});
+    return res.status(500).json({message: 'Something wrong'});
   }
 });
 
@@ -67,15 +67,15 @@ router.get('/:id/:secretKey',
     res.status(200).json(response);
   } catch (err){
     if(err instanceof NotFoundSecretError){
-      res.status(404).json({message: err.message})
+      return res.status(404).json({message: err.message})
     }
     if(err instanceof FailedDecryptError){
-      res.status(400).json({message: err.message})
+      return res.status(400).json({message: err.message})
     }
     if(err instanceof InvalidOrganizationError){
-      res.status(401).json({message: err.message})
+      return res.status(401).json({message: err.message})
     }
-    res.status(500).json({message: 'Something wrong'});
+    return res.status(500).json({message: 'Something wrong'});
   }
 });
 
@@ -91,12 +91,12 @@ router.delete('/:id', isTokenPresent, async (req,res) => {
     res.status(204).json()
   } catch (err) {
     if(err instanceof NotFoundSecretError){
-      res.status(404).json({message: err.message})
+      return res.status(404).json({message: err.message})
     }
     if(err instanceof InvalidOrganizationError){
-      res.status(401).json({message: err.message})
+      return res.status(401).json({message: err.message})
     }
-    res.status(500).json({message: 'Something wrong'});
+    return res.status(500).json({message: 'Something wrong'});
   }
 })
 
