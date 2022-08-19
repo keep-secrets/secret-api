@@ -10,7 +10,6 @@ class SaveSecret {
   }
 
   async execute({payload, expireAt, organisation}) {
-
     this._assertOrganization(organisation);
 
     const id = this.idGenerator.generate();

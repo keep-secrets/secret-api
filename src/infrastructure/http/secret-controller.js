@@ -32,7 +32,6 @@ router.post('/',
 
   const {payload, expireAt} = req.body;
   const {organisation} = req.token;
-  console.log(organisation)
 
   try{
     const command = new SaveSecretCommand({payload, expireAt, organisation})
@@ -41,7 +40,6 @@ router.post('/',
 
     res.status(200).json(response);
   } catch (err){
-    console.log(err)
     if(err instanceof AlreadyExistsSecretError){
       res.status(409).json({message: err.message})
     }
@@ -68,7 +66,6 @@ router.get('/:id/:secretKey',
 
     res.status(200).json(response);
   } catch (err){
-    console.log(err)
     if(err instanceof NotFoundSecretError){
       res.status(404).json({message: err.message})
     }
@@ -93,7 +90,6 @@ router.delete('/:id', isTokenPresent, async (req,res) => {
 
     res.status(204).json()
   } catch (err) {
-    console.log(err);
     if(err instanceof NotFoundSecretError){
       res.status(404).json({message: err.message})
     }

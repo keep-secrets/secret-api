@@ -11,9 +11,6 @@ const run = {
     mongoTimeout,
     dbName: 'secrets'
   },
-  keepsecrets:{
-    signature: process.env.JWT_KEY || 'MySuperSecret',
-  }
 }
 
 const test = {
@@ -25,9 +22,6 @@ const test = {
     mongoTimeout: 1,
     dbName: 'NOT EXISTS'
   },
-  keepsecrets:{
-    signature: process.env.JWT_KEY || 'MySuperSecret',
-  }
 }
 
 const config = {

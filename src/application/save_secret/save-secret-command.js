@@ -3,7 +3,6 @@ class SaveSecretCommand {
     this.payload = payload;
     this.organisation = organisation;
     this.expireAt = expireAt;
-    console.log('::organisation', organisation);
   }
 }
 

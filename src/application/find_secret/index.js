@@ -8,8 +8,9 @@ class FindSecret {
   }
 
   async execute({id, secretKey, organisation}){
+    this._assertOrganization(organisation);
+
     const findSecret = await this.secretRepository.findById(id)
-    console.log(findSecret)
     this._assertSecretExists({secret: findSecret});
     findSecret.assertOrganization(organisation)
 
@@ -17,6 +18,12 @@ class FindSecret {
     await this.secretRepository.delete(id);
 
     return new FindSecretReponse({payload});
+  }
+
+  _assertOrganization(organization){
+    if(!organization) {
+      throw new Error('Organization must be provided');
+    }
   }
 
   _assertSecretExists({secret}){

@@ -25,7 +25,7 @@ describe('Delete Secret', () => {
     const secretToDelete = new Secret({
       id: '11',
       secret: 'zz',
-      token: 'token',
+      organisation: 'patata',
       iv: '444',
       expireAt: new Date(date.getTime() + expireAt * 60000),
       createdAt: date,
@@ -34,7 +34,7 @@ describe('Delete Secret', () => {
 
     secretRepositoryMock.findById.mockReturnValue(secretToDelete);
 
-    await deleteSecret.execute({id: '11', token: 'token'});
+    await deleteSecret.execute({id: '11', organisation: 'patata'});
 
     expect(secretRepositoryMock.findById).toHaveBeenCalledTimes(1);
     expect(secretRepositoryMock.findById).toHaveBeenCalledWith('11');
